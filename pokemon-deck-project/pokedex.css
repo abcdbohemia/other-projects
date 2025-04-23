@@ -50,7 +50,7 @@ h1 {
     transform-style: preserve-3d;
 }
 
-.flip-box:click .flip-box-inner {
+.flip-box-inner.flipped {
     transform:rotateY(180deg);
 }
 
@@ -75,7 +75,10 @@ h1 {
     height: auto;
     object-fit: contain;
 }
-
+.flip-box-back {
+    transform:rotateY(180deg);
+    background-color: rgb(161, 102, 20);
+}
 
 .flip-box-back h2 {
     font-family: Monterrat;
