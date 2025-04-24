@@ -76,7 +76,7 @@ h1 {
     align-items: center;
     padding: 15px;
     border-radius: 8px;
-    box-sizing: border-box; /*??*/
+    box-sizing: border-box; /*width and height of content include padding and border*/
 }
 
 .card-front {
@@ -113,13 +113,13 @@ h1 {
 /*Add this media query for iphone-sized screens */
 @media (max-width: 600px) {
     .pokemon-grid {
-        grid-template-columns: repeat(2, 1rf); /*change to 2 columns*/
+        grid-template-columns: repeat(2, 1fr); /*change to 2 columns*/
         width: 95%; /*make the grid wider on smaller screens */
         gap: 10px; /*reduce gap between cards */
     }
     .pokemon-card {
         width: 100%; /*each card takes full width of its grid cell*/
-        height: auto; /*adjust automatically based on content*/
+        height: 225px; /*adjust automatically based on content*/
         margin-bottom: 15px; /* add some margin below each card*/
     }
     h1 {
