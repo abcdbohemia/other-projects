@@ -4,15 +4,18 @@ let totalPokemonCount;
 async function getTotalPokemonCount() {
     const response = await fetch('https://pokeapi.co/api/v2/pokemon-species?limit=1');
     //Just get one to get the count
-    const data = await response.json();
-    totalPokemonCount = data.count;
-}
+    const speciesData = await response.json();
+    totalPokemonCount = speciesData.count;
+} //We turn the fetched data (response) from api into json
 
 async function fetchPokemonData(id) {
     const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`)
-    const data = await response.json();
-    return data;
+    const pokemonData = await response.json();
+    return pokemonData;
 }
+// async because this functin may have to pause its execution while waiting for api to respond 
+//allowing other parts of js code to run in the meantime
+
 
 function createPokemonCard(pokemonData) {
     const card = document.createElement('div');
@@ -48,21 +51,23 @@ function createPokemonCard(pokemonData) {
     return card;    
 }
 
-generateButton.addEventListener('click', async () => {
+generateButton.addEventListener('click', async () => { //async allows use of await
     if (!totalPokemonCount)
     return; // Don't proceed if count hasn't loaded
-    pokemonContainer.innerHTML = ''; //Clear precious Pokemon
-
-    const randomIds = new Set(); //Use a Set to ensure unique IDs
-    while (randomIds.size < 10) { // why size?
+    pokemonContainer.innerHTML = ''; //Clear all previous Pokemon cards
+    const randomIds = new Set(); //Use a Set to ensure unique random IDs (no repeats)
+    while (randomIds.size < 10) { // use size not length for set
         const randomId = Math.floor(Math.random() * totalPokemonCount) + 1;
-    //why +1 here ???
+    // +1 here -because math random is 0 inclusive and totalPokemonCount exclusive
         randomIds.add(randomId);
     }
-//what? vvv
-    for (const id of randomIds) {
-        try {
-            const pokemonData = await fetchPokemonData(id);
+
+    //We use 'const id' in the for loop to create a new, block-scoped variable in each iteration, ensuring
+    //that 'id' immutably refers to the current Pokemon ID from 'randomIds'. This prevents accidental reassignment
+    //within the loop and maintains a clear, reliable reference to the specific ID being processed.
+    for (const id of randomIds) { //for.. of works well with async/await in the loop
+        try {  //try is part of error handling
+            const pokemonData = await fetchPokemonData(id); 
             const card = createPokemonCard(pokemonData);
             pokemonContainer.appendChild(card);
         } catch (error) {
